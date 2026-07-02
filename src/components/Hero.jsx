@@ -1,75 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { useInView } from '../hooks/useInView';
+import { aliKhaledHero } from '../assets/index.js';
+
+const fullText = 'Front-End Developer';
 
 export default function Hero() {
   const { ref, isVisible } = useInView({ threshold: 0.2 });
-  
   const [typedText, setTypedText] = useState('');
-  const fullText = "Front-End Developer";
-  
+
   useEffect(() => {
     let index = 0;
     let isDeleting = false;
     let timer;
-
     const type = () => {
       setTypedText(fullText.substring(0, index));
-      
-      let typeSpeed = isDeleting ? 70 : 150; // faster when deleting
-
-      if (!isDeleting && index === fullText.length) {
-        typeSpeed = 1500; // pause at the end of typing
-        isDeleting = true;
-      } else if (isDeleting && index === 0) {
-        isDeleting = false;
-        typeSpeed = 500; // pause before typing again
-      }
-
+      let speed = isDeleting ? 70 : 150;
+      if (!isDeleting && index === fullText.length) { speed = 1500; isDeleting = true; }
+      else if (isDeleting && index === 0)           { isDeleting = false; speed = 500; }
       index = isDeleting ? index - 1 : index + 1;
-      timer = setTimeout(type, typeSpeed);
+      timer = setTimeout(type, speed);
     };
-
     timer = setTimeout(type, 150);
-
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <section 
-      id="home" 
-      className="relative h-screen flex items-center bg-cover bg-center bg-no-repeat"
-      style={{ 
-        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('/image/ali-khaled.jpg')` 
+    <section
+      id="home"
+      className="h-screen flex items-center bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `linear-gradient(rgba(15,23,42,0.8), rgba(15,23,42,0.9)), url('${aliKhaledHero}')`,
+        backgroundAttachment: 'fixed',
       }}
     >
-      <div 
+      <div
         ref={ref}
-        className={`container mx-auto px-6 lg:px-24 z-10 fade-in ${isVisible ? 'visible' : ''}`}
+        className={`w-[90%] max-w-[1200px] mx-auto px-[15px] fade-in${isVisible ? ' visible' : ''}`}
       >
-        <div className="max-w-3xl">
-          <h2 className="text-2xl md:text-3xl text-primary font-semibold mb-2 font-cairo">
-            Hello, I'm
-          </h2>
-          <h1 className="text-5xl md:text-7xl font-bold text-text-main mb-4 font-cairo drop-shadow-lg">
-            Ali Khaled
-          </h1>
-          <h3 className="text-3xl md:text-4xl text-accent font-semibold mb-6 h-10 flex items-center">
+        <div className="max-w-[700px]">
+          <p className="text-2xl text-primary mb-[10px] font-semibold">Hello, I'm</p>
+
+          <h1 className="text-[60px] leading-[1.1] mb-5 font-extrabold">Ali Khaled</h1>
+
+          {/* Typed text — .typed-cursor uses @keyframes blink from config */}
+          <div className="text-[32px] text-accent font-semibold mb-5 flex items-center gap-1 min-h-[44px]">
             {typedText}
-            <span className="w-1 h-8 bg-accent ml-1 animate-pulse"></span>
-          </h3>
-          <p className="text-lg md:text-xl text-text-muted mb-8 leading-relaxed max-w-2xl font-cairo">
-            I build interactive, responsive, and modern web applications with a strong focus on design and user experience. Let's turn your ideas into reality.
+            <span className="typed-cursor" />
+          </div>
+
+          <p className="text-lg text-text-muted mb-[30px] max-w-[600px]">
+            Dedicated Front-End Developer specializing in crafting modern,
+            responsive, and intuitive web interfaces. Ready to tackle your
+            project's challenges and build a digital experience your users will love.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <a 
-              href="#contact" 
-              className="px-8 py-3 bg-primary text-white rounded-full font-semibold hover:bg-primary-hover transition-colors shadow-[0_0_15px_rgba(255,51,95,0.4)] hover:shadow-[0_0_25px_rgba(255,51,95,0.6)] duration-300"
+
+          <div className="flex flex-wrap gap-[15px]">
+            <a
+              href="#contact"
+              className="inline-block px-[30px] py-3 rounded-full font-semibold border-2 border-transparent bg-primary text-white hover:bg-transparent hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
             >
               Hire Me
             </a>
-            <a 
-              href="#projects" 
-              className="px-8 py-3 border-2 border-primary text-primary rounded-full font-semibold hover:bg-primary hover:text-white transition-colors duration-300"
+            <a
+              href="#projects"
+              className="inline-block px-[30px] py-3 rounded-full font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"
             >
               View Work
             </a>

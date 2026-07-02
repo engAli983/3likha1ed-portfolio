@@ -7,10 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Build output
 dist
 dist-ssr
+
+# Environment files
 *.local
+.env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +31,67 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Large archive files (source reference - not needed in repo)
+*.zip
+*.tgz
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage
+*.lcov
+.nyc_output
+
+# Optional npm cache
+.npm
+.eslintcache
+.stylelintcache
+.node_repl_history
+
+# Parcel cache
+.cache
+.parcel-cache
+
+# Next.js / Nuxt / Gatsby
+.next
+out
+.nuxt
+.output
+.cache/
+.vuepress/dist
+.temp
+.svelte-kit/
+**/.vitepress/dist
+**/.vitepress/cache
+.docusaurus
+
+# Vite files
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.vite/
+
+# Serverless / FuseBox / DynamoDB / Firebase
+.serverless/
+.fusebox/
+.dynamodb/
+.firebase/
+
+# Misc
+.tern-port
+.vscode-test
+.pnpm-store
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

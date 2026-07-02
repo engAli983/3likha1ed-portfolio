@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
 
 # Ali Khaled | Personal Portfolio
@@ -87,3 +88,7 @@ Feel free to reach out for collaborations or freelance opportunities!
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+=======
+# ali-khaled-portfolio
+Personal portfolio built with React 18 + Vite + Tailwind CSS — featuring GitHub API integration, typing animation &amp; EmailJS contact form
+>>>>>>> 1e1250b5a4349de47ff403ebc2e2487505585a72

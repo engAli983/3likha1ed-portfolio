@@ -11,7 +11,7 @@ import BackToTop from './components/BackToTop';
 
 function App() {
   return (
-    <div className="font-cairo bg-[#0f172a] text-[#f8fafc] overflow-x-hidden">
+    <div>
       <Navbar />
       <Hero />
       <About />

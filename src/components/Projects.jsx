@@ -1,177 +1,179 @@
 import React, { useState, useEffect } from 'react';
 import { useInView } from '../hooks/useInView';
-import { customProjectData } from '../data/projects';
+import { customProjectData, customProjectIds } from '../data/projects';
+import { imgPortfolio } from '../assets/index.js';
 
 const excludedRepos = [
-  "engali983.github.io", "react-components-practice", 
-  "JavaScript-Course-Reference", "course-js", "My-Portfolio", 
-  "Ramadan-companion", "learn-git", "Artificial-intelligence-templates-", 
-  "engAli983", "JS_Practice", "eldwaly"
+  'engali983.github.io', 'react-components-practice', 'JavaScript-Course-Reference',
+  'course-js', 'My-Portfolio', 'Ramadan-companion', 'learn-git',
+  'Artificial-intelligence-templates-', 'engAli983', 'JS_Practice', 'eldwaly',
+  'My-Portfolio-React',
+  ...customProjectIds,
 ];
 
 const filters = ['All', 'JavaScript', 'API', 'CSS', 'React'];
 
 export default function Projects() {
   const { ref, isVisible } = useInView({ threshold: 0.1 });
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects]       = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [visibleCount, setVisibleCount] = useState(6);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]         = useState(true);
 
   useEffect(() => {
-    const fetchGithubRepos = async () => {
+    const fetchRepos = async () => {
       try {
-        const response = await fetch('https://api.github.com/users/engAli983/repos?sort=updated');
-        const data = await response.json();
-        
+        const res  = await fetch('https://api.github.com/users/engAli983/repos?sort=updated');
+        const data = await res.json();
         if (Array.isArray(data)) {
-          const formattedRepos = data
+          const extra = data
             .filter(repo => !excludedRepos.includes(repo.name) && !repo.fork)
             .map(repo => ({
               id: repo.id,
-              name: repo.name.replace(/-/g, ' '),
+              name: repo.name.replace(/-|_/g, ' '),
               description: repo.description || 'A web development project built with modern technologies.',
-              image: '/image/Portfolio.webp', // fallback image
+              image: imgPortfolio,
               html_url: repo.html_url,
               homepage: repo.homepage,
-              topics: repo.topics && repo.topics.length > 0 ? repo.topics : (repo.language ? [repo.language] : ['JavaScript']),
+              topics: repo.topics?.length ? repo.topics : [repo.language || 'JavaScript'],
             }));
-
-          // Combine with custom projects
-          setProjects([...customProjectData, ...formattedRepos]);
+          setProjects([...customProjectData, ...extra]);
         }
-      } catch (error) {
-        console.error("Error fetching repos", error);
-        setProjects([...customProjectData]); // Fallback to custom data only
+      } catch {
+        setProjects([...customProjectData]);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchGithubRepos();
+    fetchRepos();
   }, []);
 
-  const filteredProjects = projects.filter(project => {
-    if (activeFilter === 'All') return true;
-    const lowerTopics = project.topics.map(t => t.toLowerCase());
-    return lowerTopics.includes(activeFilter.toLowerCase());
-  });
-
-  const displayedProjects = filteredProjects.slice(0, visibleCount);
-
-  const handleLoadMore = () => {
-    if (visibleCount >= filteredProjects.length) {
-      setVisibleCount(6); // Show less
-    } else {
-      setVisibleCount(prev => prev + 6); // Load more
-    }
-  };
+  const filtered  = projects.filter(p =>
+    activeFilter === 'All' || p.topics.map(t => t.toLowerCase()).includes(activeFilter.toLowerCase())
+  );
+  const displayed = filtered.slice(0, visibleCount);
 
   return (
-    <section id="projects" className="py-20 bg-[#151f32]">
-      <div 
+    <section id="projects" className="py-[100px] bg-[#151f32]">
+      <div
         ref={ref}
-        className={`container mx-auto px-6 lg:px-24 fade-in ${isVisible ? 'visible' : ''}`}
+        className={`w-[90%] max-w-[1200px] mx-auto px-[15px] fade-in${isVisible ? ' visible' : ''}`}
       >
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-text-main inline-block relative font-cairo">
-            My <span className="text-primary">Projects</span>
-            <span className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-primary rounded-full"></span>
-          </h2>
+        {/* Section Header */}
+        <div className="mb-[60px] text-center">
+          <p className="text-primary font-semibold uppercase tracking-[2px]">Portfolio</p>
+          <h2 className="text-[40px] font-bold mb-[15px] text-white">My Projects</h2>
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {filters.map(filter => (
+        <div className="flex flex-wrap justify-center gap-[15px] mb-[40px]">
+          {filters.map(f => (
             <button
-              key={filter}
-              onClick={() => {
-                setActiveFilter(filter);
-                setVisibleCount(6);
-              }}
-              className={`px-6 py-2 rounded-full font-semibold font-cairo transition-all duration-300 ${
-                activeFilter === filter 
-                  ? 'bg-primary text-white shadow-[0_0_15px_rgba(255,51,95,0.5)]' 
-                  : 'bg-bg-card text-text-main hover:bg-primary-hover hover:text-white'
+              key={f}
+              onClick={() => { setActiveFilter(f); setVisibleCount(6); }}
+              className={`py-2 px-6 rounded-full font-semibold text-[15px] cursor-pointer border-2 border-primary font-cairo transition-all duration-300 ${
+                activeFilter === f
+                  ? 'bg-primary text-white'
+                  : 'bg-transparent text-primary hover:bg-primary hover:text-white'
               }`}
+              style={activeFilter === f ? { boxShadow: '0 0 15px rgba(255,51,95,0.5)' } : {}}
             >
-              {filter}
+              {f}
             </button>
           ))}
         </div>
 
+        {/* Project Cards */}
         {loading ? (
-          <div className="text-center text-primary text-2xl py-10">
-            <i className="fa-solid fa-spinner fa-spin"></i> Loading...
+          <div className="text-center py-[40px] text-[20px] text-primary">
+            <i className="fa-solid fa-spinner fa-spin mr-[10px]" />
+            Loading projects...
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {displayedProjects.map(project => (
-                <div 
-                  key={project.id} 
-                  className="bg-bg-card rounded-xl overflow-hidden shadow-card group hover:-translate-y-2 transition-transform duration-300 border border-transparent hover:border-primary"
+            <div
+              className="grid gap-[30px]"
+              style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}
+            >
+              {displayed.map(project => (
+                <article
+                  key={project.id}
+                  className="bg-bg-card rounded-[12px] overflow-hidden transition-all duration-300 flex flex-col border border-transparent hover:-translate-y-[5px] hover:border-primary"
+                  style={{ ':hover': { boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)' } }}
+                  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 10px 30px -10px rgba(0,0,0,0.5)'}
+                  onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
                 >
-                  <div className="relative overflow-hidden h-48">
-                    <img 
-                      src={project.image} 
-                      alt={project.name} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  {/* Card Image */}
+                  <div className="relative overflow-hidden h-[220px]">
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                      <a 
-                        href={project.html_url} 
-                        target="_blank" 
+                  </div>
+
+                  {/* Card Content */}
+                  <div className="p-[25px] flex flex-col flex-grow">
+                    {/* Tech Tags */}
+                    <div className="flex flex-wrap gap-2 mb-[15px]">
+                      {project.topics.slice(0, 4).map((tag, i) => (
+                        <span key={i} className="tech-tag">{tag}</span>
+                      ))}
+                    </div>
+
+                    <h3 className="text-[22px] font-bold text-text-main capitalize mb-3">{project.name}</h3>
+                    <p className="text-text-muted text-[15px] leading-relaxed flex-grow mb-5">{project.description}</p>
+
+                    {/* Card Footer */}
+                    <div className="flex justify-between items-center mt-auto pt-[15px]" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                      <a
+                        href={project.html_url}
+                        target="_blank"
                         rel="noopener noreferrer"
-                        className="w-12 h-12 bg-bg-dark rounded-full flex items-center justify-center text-white hover:bg-primary hover:text-white transition-colors"
-                        title="GitHub Repo"
+                        className="flex items-center gap-2 text-text-main text-[14px] font-semibold hover:text-primary transition-colors duration-300"
                       >
-                        <i className="fa-brands fa-github text-xl"></i>
+                        <i className="fa-brands fa-github text-base" /> GitHub
                       </a>
                       {project.homepage && (
-                        <a 
-                          href={project.homepage} 
-                          target="_blank" 
+                        <a
+                          href={project.homepage}
+                          target="_blank"
                           rel="noopener noreferrer"
-                          className="w-12 h-12 bg-bg-dark rounded-full flex items-center justify-center text-white hover:bg-primary hover:text-white transition-colors"
-                          title="Live Demo"
+                          className="text-white py-2 px-[18px] rounded-[30px] text-[14px] font-bold inline-flex items-center gap-2 transition-all duration-300 hover:-translate-y-[3px] hover:scale-[1.02]"
+                          style={{
+                            background: 'linear-gradient(45deg, #ff335f, #ff6b8b)',
+                            boxShadow: '0 4px 15px rgba(255,51,95,0.4)',
+                          }}
                         >
-                          <i className="fa-solid fa-link text-xl"></i>
+                          <i className="fa-solid fa-arrow-up-right-from-square text-[15px]" /> Live Demo
                         </a>
                       )}
                     </div>
                   </div>
-                  
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {project.topics.slice(0, 3).map((topic, i) => (
-                        <span key={i} className="text-xs font-semibold bg-[#0f172a] text-primary px-3 py-1 rounded-full">
-                          {topic}
-                        </span>
-                      ))}
-                    </div>
-                    <h3 className="text-xl font-bold text-text-main mb-2 font-cairo capitalize">
-                      {project.name}
-                    </h3>
-                    <p className="text-text-muted text-sm line-clamp-3 font-cairo">
-                      {project.description}
-                    </p>
-                  </div>
-                </div>
+                </article>
               ))}
             </div>
 
-            {filteredProjects.length > 6 && (
-              <div className="text-center">
-                <button 
-                  onClick={handleLoadMore}
-                  className="px-8 py-3 border-2 border-primary text-primary rounded-full font-semibold hover:bg-primary hover:text-white transition-colors duration-300 font-cairo"
+            {/* Load More / Show Less */}
+            <div className="flex justify-center gap-[15px] mt-[40px]">
+              {visibleCount > 6 && (
+                <button
+                  onClick={() => { setVisibleCount(6); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="inline-block px-[30px] py-3 rounded-full font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"
                 >
-                  {visibleCount >= filteredProjects.length ? 'Show Less' : 'Load More'}
+                  Show Less
                 </button>
-              </div>
-            )}
+              )}
+              {visibleCount < filtered.length && (
+                <button
+                  onClick={() => setVisibleCount(v => v + 3)}
+                  className="inline-block px-[30px] py-3 rounded-full font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"
+                >
+                  Load More
+                </button>
+              )}
+            </div>
           </>
         )}
       </div>

@@ -1,32 +1,56 @@
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
-
-/* Font Awesome */
+/* Font Awesome Icons CDN */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
+/* ==============================================
+   Base - Global resets using Tailwind
+   ============================================== */
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply font-cairo bg-bg-dark text-text-main leading-relaxed overflow-x-hidden; }
+  ul   { list-style: none; }
+  a    { text-decoration: none; color: inherit; }
+  img  { @apply max-w-full block; }
 }
 
-body {
-  font-family: 'Cairo', sans-serif;
-  background-color: #0f172a;
-  color: #f8fafc;
-  overflow-x: hidden;
-}
+/* ==============================================
+   Components - ONLY for things Tailwind can't
+   do in className: pseudo-elements, animations,
+   state combinations, brand colors
+   ============================================== */
+@layer components {
 
-/* Fade-in animation */
-.fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
-}
+  /* Fade-in scroll animation (JS toggles .visible) */
+  .fade-in         { @apply opacity-0 translate-y-[30px] transition-all duration-[600ms] ease-out; }
+  .fade-in.visible { @apply opacity-100 translate-y-0; }
 
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+  /* Scroll progress bar with gradient */
+  .scroll-progress-bar {
+    @apply fixed top-0 left-0 h-[4px] z-[9999] transition-[width] duration-100 ease-out;
+    background: linear-gradient(to right, #ff335f, #38bdf8);
+  }
+
+  /* Typing cursor – requires @keyframes blink from tailwind.config */
+  .typed-cursor { @apply inline-block w-[3px] h-9 bg-accent animate-blink; }
+
+  /* Social brand hover colors – not part of Tailwind default palette */
+  .social-facebook:hover  { background-color: #1877f2; }
+  .social-linkedin:hover  { background-color: #0a66c2; }
+  .social-instagram:hover { background-color: #fd1d1d; }
+  .social-facebook  a i   { color: #1877f2; }
+  .social-linkedin  a i   { color: #0a66c2; }
+  .social-instagram a i   { color: #fd1d1d; }
+  .social-facebook:hover  i,
+  .social-linkedin:hover  i,
+  .social-instagram:hover i { @apply text-white scale-[1.2]; }
+
+  /* Tech tag hover background (rgba → solid, can't do in className) */
+  .tech-tag {
+    @apply text-primary px-3 py-[5px] text-[13px] font-semibold rounded-[20px] transition-all duration-300 hover:text-white hover:scale-105;
+    background: rgba(255, 51, 95, 0.15);
+  }
+  .tech-tag:hover { background-color: #ff335f; }
 }
