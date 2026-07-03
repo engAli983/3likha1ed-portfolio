@@ -16,6 +16,7 @@ import imgTemplateOne from './images/HTML-And-CSS-Template-One.webp';
 import imgTemplateTwo from './images/HTML-And-CSS-Template-Two.webp';
 import imgTemplateThree from './images/HTML-And-CSS-Template-Three.webp';
 import imgTemplateFour from './images/HTML-And-CSS-Template-Four.webp';
+import imgDanielsBootstrap from './images/Daniels-Portfolio-Bootstrap.png';
 
 // ===== Documents =====
 import cvPdf from './docs/Ali_Khaled_CV.pdf?url';
@@ -38,6 +39,7 @@ export {
   imgTemplateTwo,
   imgTemplateThree,
   imgTemplateFour,
+  imgDanielsBootstrap,
   // Docs
   cvPdf,
 };

@@ -40,12 +40,15 @@
   .social-facebook:hover  { background-color: #1877f2; }
   .social-linkedin:hover  { background-color: #0a66c2; }
   .social-instagram:hover { background-color: #fd1d1d; }
+  .social-whatsapp:hover  { background-color: #25d366; }
   .social-facebook  a i   { color: #1877f2; }
   .social-linkedin  a i   { color: #0a66c2; }
   .social-instagram a i   { color: #fd1d1d; }
+  .social-whatsapp  a i   { color: #25d366; }
   .social-facebook:hover  i,
   .social-linkedin:hover  i,
-  .social-instagram:hover i { @apply text-white scale-[1.2]; }
+  .social-instagram:hover i,
+  .social-whatsapp:hover  i { @apply text-white scale-[1.2]; }
 
   /* Tech tag hover background (rgba → solid, can't do in className) */
   .tech-tag {

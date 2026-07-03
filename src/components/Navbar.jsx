@@ -75,7 +75,7 @@ export default function Navbar() {
             href="#home" 
             className="text-[28px] font-extrabold tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent transition-all duration-300 hover:scale-105"
           >
-            Eng-A<span className="text-primary bg-none bg-clip-border text-transparent bg-gradient-to-r from-primary to-[#ff6b8b]">li</span>
+            3<span className="bg-none bg-clip-text text-transparent bg-gradient-to-r from-primary to-[#ff6b8b]">likha1ed</span>
           </a>
 
           {/* Desktop Navigation Links */}

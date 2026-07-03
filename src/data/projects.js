@@ -11,17 +11,27 @@ import {
   imgTemplateTwo,
   imgTemplateThree,
   imgTemplateFour,
+  imgDanielsBootstrap,
 } from '../assets/index.js';
 
 export const customProjectData = [
   {
     id: 'Portfolio',
-    name: 'Personal Developer Portfolio',
-    description: 'A dynamic and fully responsive personal portfolio built to showcase my skills and projects. Features real-time GitHub API integration for project fetching, smooth scroll animations using Intersection Observer, and a fully functional contact form powered by EmailJS.',
+    name: 'Classic Developer Portfolio',
+    description: 'My first personal portfolio website, built from scratch using pure HTML, CSS, and Vanilla JavaScript — no frameworks, no libraries. Features real-time GitHub API integration to fetch and display projects dynamically, smooth scroll animations with Intersection Observer, and a fully functional contact form powered by EmailJS.',
     image: imgPortfolio,
     html_url: 'https://github.com/engAli983/Portfolio',
     homepage: 'https://engali983.github.io/Portfolio/',
-    topics: ['HTML5', 'CSS3', 'Vanilla JS', 'GitHub API', 'CSS Grid', 'EmailJS'],
+    topics: ['HTML5', 'CSS3', 'Vanilla JS', 'GitHub API', 'EmailJS'],
+  },
+  {
+    id: 'daniels-portfolio-bootstrap',
+    name: 'Daniels – Bootstrap UI Portfolio',
+    description: 'A sleek and fully responsive portfolio template built for a UI/UX designer persona. Developed using Bootstrap 5 for the layout and grid system, enriched with custom CSS for unique styling, and powered by Vanilla JavaScript for interactive elements like smooth scrolling, form validation, and animated skill counters.',
+    image: imgDanielsBootstrap,
+    html_url: 'https://github.com/engAli983/daniels-portfolio-bootstrap',
+    homepage: 'https://engali983.github.io/daniels-portfolio-bootstrap/',
+    topics: ['Bootstrap 5', 'HTML5', 'CSS3', 'Vanilla JS', 'UI Design', 'Responsive'],
   },
   {
     id: 'forkify-api',

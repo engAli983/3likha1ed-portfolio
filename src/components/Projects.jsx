@@ -7,16 +7,14 @@ const excludedRepos = [
   'engali983.github.io', 'react-components-practice', 'JavaScript-Course-Reference',
   'course-js', 'My-Portfolio', 'Ramadan-companion', 'learn-git',
   'Artificial-intelligence-templates-', 'engAli983', 'JS_Practice', 'eldwaly',
-  'My-Portfolio-React',
+  'My-Portfolio-React', 'daniels-portfolio-bootstrap', '3likha1ed-portfolio', 'ali-khaled-portfolio',
   ...customProjectIds,
 ];
 
-const filters = ['All', 'JavaScript', 'API', 'CSS', 'React'];
 
 export default function Projects() {
   const { ref, isVisible } = useInView({ threshold: 0.1 });
   const [projects, setProjects]       = useState([]);
-  const [activeFilter, setActiveFilter] = useState('All');
   const [visibleCount, setVisibleCount] = useState(6);
   const [loading, setLoading]         = useState(true);
 
@@ -48,10 +46,7 @@ export default function Projects() {
     fetchRepos();
   }, []);
 
-  const filtered  = projects.filter(p =>
-    activeFilter === 'All' || p.topics.map(t => t.toLowerCase()).includes(activeFilter.toLowerCase())
-  );
-  const displayed = filtered.slice(0, visibleCount);
+  const displayed = projects.slice(0, visibleCount);
 
   return (
     <section id="projects" className="py-[100px] bg-[#151f32]">
@@ -63,24 +58,6 @@ export default function Projects() {
         <div className="mb-[60px] text-center">
           <p className="text-primary font-semibold uppercase tracking-[2px]">Portfolio</p>
           <h2 className="text-[40px] font-bold mb-[15px] text-white">My Projects</h2>
-        </div>
-
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-[15px] mb-[40px]">
-          {filters.map(f => (
-            <button
-              key={f}
-              onClick={() => { setActiveFilter(f); setVisibleCount(6); }}
-              className={`py-2 px-6 rounded-full font-semibold text-[15px] cursor-pointer border-2 border-primary font-cairo transition-all duration-300 ${
-                activeFilter === f
-                  ? 'bg-primary text-white'
-                  : 'bg-transparent text-primary hover:bg-primary hover:text-white'
-              }`}
-              style={activeFilter === f ? { boxShadow: '0 0 15px rgba(255,51,95,0.5)' } : {}}
-            >
-              {f}
-            </button>
-          ))}
         </div>
 
         {/* Project Cards */}
@@ -165,7 +142,7 @@ export default function Projects() {
                   Show Less
                 </button>
               )}
-              {visibleCount < filtered.length && (
+              {visibleCount < projects.length && (
                 <button
                   onClick={() => setVisibleCount(v => v + 3)}
                   className="inline-block px-[30px] py-3 rounded-full font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"

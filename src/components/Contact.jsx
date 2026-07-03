@@ -6,6 +6,7 @@ const socialLinks = [
   { href: 'https://www.facebook.com/ali.khaled.6.6.06/?locale=ar_AR', icon: 'fa-brands fa-facebook-f',  cls: 'social-facebook'  },
   { href: 'https://www.linkedin.com/in/ali-khaled-014b21344/',         icon: 'fa-brands fa-linkedin',     cls: 'social-linkedin'  },
   { href: 'https://www.instagram.com/a17a6_6/',                         icon: 'fa-brands fa-instagram',   cls: 'social-instagram' },
+  { href: 'https://wa.me/20133458035',                                 icon: 'fa-brands fa-whatsapp',    cls: 'social-whatsapp'  },
 ];
 
 export default function Contact() {
